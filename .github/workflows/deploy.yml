@@ -2,6 +2,12 @@ name: Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      deploy-netlify:
+        description: "Enable Netlify deployment"
+        type: boolean
+        required: true
+        default: true
 
 jobs:
   deploy:
@@ -22,6 +28,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to Netlify
+        if: ${{ inputs.deploy-netlify }}
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: "./dist/gha-demo/browser"
