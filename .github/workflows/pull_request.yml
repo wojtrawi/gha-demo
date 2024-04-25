@@ -18,11 +18,8 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install-deps
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm run test
+      - name: Check quality
+        uses: ./.github/actions/check-quality
 
       - name: Build
         run: npm run build
