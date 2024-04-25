@@ -1,19 +1,5 @@
 name: Deploy
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       deploy-netlify:
-#         description: "Enable Netlify deployment"
-#         type: boolean
-#         required: true
-#         default: true
-#       deploy-vercel:
-#         description: "Enable Vercel deployment"
-#         type: boolean
-#         required: true
-#         default: true
-
 on:
   push:
     branches:
@@ -49,7 +35,6 @@ jobs:
         run: npm run build
 
       - name: Deploy to Netlify
-        # if: ${{ inputs.deploy-netlify }}
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: "./dist/gha-demo/browser"
@@ -62,17 +47,13 @@ jobs:
         timeout-minutes: 1
 
       - name: Install Vercel CLI
-        # if: ${{ inputs.deploy-vercel }}
         run: npm install --global vercel@canary
 
       - name: Pull Vercel Environment Information
-        # if: ${{ inputs.deploy-vercel }}
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build for Vercel
-        # if: ${{ inputs.deploy-vercel }}
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
-        # if: ${{ inputs.deploy-vercel }}
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
